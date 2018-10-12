@@ -1,6 +1,12 @@
 package com.revature.model;
 
-public class EmployeeUser implements User {
+public class EmployeeUser extends User {
+	
+	
+	
+	public EmployeeUser (String fn, String ln, String un, String pw, String em, int pos) {
+		super(fn, ln, un, pw, em, pos);
+	}
 
 	@Override
 	public void login() {
