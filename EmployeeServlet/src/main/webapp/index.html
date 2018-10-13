@@ -1,9 +1,9 @@
 <html>
 	<body>
 		<p> Hello! Make an account! </p>
-		
+		<p> * = required </p>
 		<form action="accountcreated" method="post">
-			Position:<br>
+			Position*:<br>
 			<input list="positions" name="position" required>
 			<datalist id="positions">
 			    <option value="Employee">
@@ -11,14 +11,31 @@
 			</datalist> 
 			<br>
 			<br>
-			First Name:<br>
+			First Name*:<br>
 			<input type="text" name="firstName" required>
 			<br>
 			<br>
-			Last Name:<br>
+			Last Name*:<br>
 			<input type="text" name="lastName" required>
 			<br>
 			<br>
+			Username*:<br>
+			<input type="text" name="username" required>
+			<br>
+			<br>
+			Password*:<br>
+			<input type="password" name="password" required>
+			<br>
+			<br>
+			Email:<br>
+			<input type="email" name="email">
+			<br>
+			<br>
+			<button type="submit">Create Account</button>
+		</form>
+		
+		<p> Login here my dude </p>
+		<form action="logging" method="post">
 			Username:<br>
 			<input type="text" name="username" required>
 			<br>
@@ -27,11 +44,8 @@
 			<input type="password" name="password" required>
 			<br>
 			<br>
-			Email:<br>
-			<input type="email" name="email" required>
-			<br>
-			<br>
-			<button type="submit">CREATE ACCOUNT</button>
+			<button type="submit">Login</button>
 		</form>
+		
 	</body>
 </html>
