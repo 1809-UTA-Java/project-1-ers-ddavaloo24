@@ -17,7 +17,7 @@ public class ManagerUser extends User {
 
 
 	@Override
-	public void viewHome(PrintWriter pw) {
+	public void viewHome(PrintWriter pw, String name) {
 		pw.println("<html> <body> ");
 		pw.println("THIS IS THE MANAGER HOME PAGE");
 		pw.println("<br>");
@@ -29,14 +29,9 @@ public class ManagerUser extends User {
 	}
 
 	@Override
-	public void viewPendingReqs() {
+	public String viewInfo() {
 		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void viewInfo() {
-		// TODO Auto-generated method stub
+		return null;
 
 	}
 

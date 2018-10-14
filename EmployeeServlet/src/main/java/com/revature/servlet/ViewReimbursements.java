@@ -24,15 +24,14 @@ public class ViewReimbursements extends HttpServlet {
 		PrintWriter pw = resp.getWriter();
 		HttpSession session = req.getSession(false);
 		String path = req.getPathInfo();
-		
 
 		if (session != null) {
 
 			int id = (Integer) session.getAttribute("id");
 			ArrayList<Reimbursement> reim = ReimbursementDao.retrieveReimbursementsByAuthor(id);
-			
+
 			pw.println("<html><body>");
-			
+
 			if (path == null || path.equals("/")) {
 				int i = 0;
 				pw.println("Pending Requests: \n");
@@ -76,38 +75,42 @@ public class ViewReimbursements extends HttpServlet {
 				if (i == 0)
 					pw.println("None");
 			}
-			
+
 			String[] pathSplits = path.split("/");
-			
-			if(pathSplits.length != 2) {
+
+			if (pathSplits.length != 2) {
 				resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
 				return;
 			}
-			
+
 			int reimID = Integer.parseInt(pathSplits[1]);
 			Reimbursement found = null;
-			for(Reimbursement r : reim) {
-				if(r.getId() == reimID) {
+			for (Reimbursement r : reim) {
+				if (r.getId() == reimID) {
 					found = r;
 				}
 			}
-			
-			if(found != null) {
-				
-				if(session.getAttribute("reimID") != null) {
+
+			if (found != null) {
+
+				if (session.getAttribute("reimID") != null) {
 					session.removeAttribute("reimID");
 				}
-				
-				session.setAttribute("reimID", found.getId());				
+
+				session.setAttribute("reimID", found.getId());
 				found.viewReimbursementFull(pw);
+				if (found.getStatus() == 1) {
+					pw.println("<form action=\"cancel\" method=\"post\">"
+							+ "<button type=\"submit\">Delete Current Request</button>" + "</form>");
+				}
 			}
-			
+
 			pw.println("</body></html>");
 		} else {
 			pw.println("BRO YOU GOTTA LOGIN FIRST!! WE ARE TAKING YOU HOME TO LOGIN MY DUDE");
 			resp.setHeader("Refresh", "3; URL=home");
 		}
-		
+
 		pw.close();
 	}
 }

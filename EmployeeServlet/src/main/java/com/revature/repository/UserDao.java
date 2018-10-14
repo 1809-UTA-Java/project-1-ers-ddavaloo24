@@ -5,6 +5,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import com.revature.model.EmployeeUser;
 import com.revature.model.ManagerUser;
@@ -191,6 +192,82 @@ public class UserDao {
 		}
 
 		return null;
+	}
+
+	public static ArrayList<EmployeeUser> retrieveAllEmployees() {
+		PreparedStatement ps = null;
+		String sql;
+		int id = 0;
+		String firstName = "";
+		String lastName = "";
+		String username = "";
+		String password = "";
+		String email = "";
+
+		ArrayList<EmployeeUser> emps = new ArrayList<>();
+
+		try (Connection conn = ConnectionUtil.getConnection()) {
+
+			sql = "SELECT * FROM ERS_USERS WHERE UR_ID=1";
+			ps = conn.prepareStatement(sql);
+			ResultSet rs = ps.executeQuery();
+
+			while (rs.next()) {
+				id = rs.getInt("U_ID");
+				firstName = rs.getString("U_FIRSTNAME");
+				lastName = rs.getString("U_LASTNAME");
+				email = rs.getString("U_EMAIL");
+				username = rs.getString("U_USERNAME");
+				password = rs.getString("U_PASSWORD");
+
+				emps.add(new EmployeeUser(id, firstName, lastName, username, password, email, 1));
+			}
+
+			ps.close();
+			rs.close();
+
+			return emps;
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return null;
+	}
+
+	public static boolean updateEmployeeByID(int id, String changeInfo, String field) {
+		PreparedStatement ps = null;
+		String sql = "";
+
+		try (Connection conn = ConnectionUtil.getConnection()) {
+			
+			if (changeInfo.equals("First Name"))
+				sql = "UPDATE ERS_USERS SET U_FIRSTNAME=? WHERE U_ID=?";
+			else if (changeInfo.equals("Last Name"))
+				sql = "UPDATE ERS_USERS SET U_LASTNAME=? WHERE U_ID=?";
+			else if (changeInfo.equals("Email"))
+				sql = "UPDATE ERS_USERS SET U_EMAIL=? WHERE U_ID=?";
+			
+			ps = conn.prepareStatement(sql);				
+			ps.setString(1, field);
+			ps.setInt(2, id);
+			int count = ps.executeUpdate();
+			
+			if (count > 0) {
+				return true;
+			} else {
+				return false;
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return false;
 	}
 
 }

@@ -59,17 +59,14 @@ public class Reimbursement {
 
 		if (status == 1) {
 			pw.println("<br>Status: Pending<br>");
-			pw.println("<br>");
-			pw.println("<form action=\"cancel\" method=\"post\">"
-					+ "<button type=\"submit\">Delete Current Request</button>"
-					+ "</form>");
-			
 		}
 		else if(status == 2) {
 			pw.println("<br>Status: Approved<br>");
 		} else {
 			pw.println("<br>Status: Denied<br>");
 		}
+		
+		pw.println("<br>");		
 	}
 
 	public int getId() {

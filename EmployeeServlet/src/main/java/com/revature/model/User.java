@@ -25,7 +25,6 @@ public abstract class User {
 		this.position = pos;
 	}
 	
-	
 	//WITHOUT ID
 	public User(String firstName, String lastName, String username, String password, String email, int position) {
 		super();
@@ -38,27 +37,19 @@ public abstract class User {
 	}
 
 
-
 	public static User login(String username, String password) {
 
 		boolean existance = UserDao.checkUsernammePassword(username, password);
-
 		if (!existance)
 			return null;
 
 		return UserDao.loginUser(username, password);
 	}
 
-	
-	
-	public abstract void viewHome(PrintWriter pw);
+	public abstract void viewHome(PrintWriter pw, String name);
 
-	public abstract void viewPendingReqs();
+	public abstract String viewInfo();
 
-	public abstract void viewInfo();
-
-	
-	
 	
 	public int getId() {
 		return id;
