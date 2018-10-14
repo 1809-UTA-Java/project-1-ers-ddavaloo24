@@ -42,7 +42,34 @@ public class Reimbursement {
 	}
 
 	public String viewReimbursement() {
-		return ("ID: " + id + " ,Amount: " + amount + "\n");
+		String strDouble = String.format("%.2f", amount);
+		return ("ID: " + id + " ,Amount: $" + strDouble + "\n");
+	}
+
+	public void viewReimbursementFull(PrintWriter pw) {
+		
+		String strDouble = String.format("%.2f", amount);
+		
+		pw.println("Reimbursement ID: " + id + "<br>");
+		pw.println("<br>Amount Requested: $" + strDouble + "<br>");
+		pw.println("<br>Description: " + description + "<br>");
+		pw.println("<br>Date and Time submitted: " + time_submitted + "<br>");
+		pw.println("<br>Date and Time resolved: " + time_resolved + "<br>");
+		pw.println("<br>Request Type: " + type + "<br>");
+
+		if (status == 1) {
+			pw.println("<br>Status: Pending<br>");
+			pw.println("<br>");
+			pw.println("<form action=\"cancel\" method=\"post\">"
+					+ "<button type=\"submit\">Delete Current Request</button>"
+					+ "</form>");
+			
+		}
+		else if(status == 2) {
+			pw.println("<br>Status: Approved<br>");
+		} else {
+			pw.println("<br>Status: Denied<br>");
+		}
 	}
 
 	public int getId() {

@@ -43,9 +43,9 @@ public class CreateReimbursement extends HttpServlet {
 			boolean result = ReimbursementDao.insertReimbursement(reim);
 
 			if (result) {
-				pw.println("Pending reimbursement created. You will not be redirected to the main menu");
+				pw.println("Pending reimbursement created. You will now be redirected to the main menu");
 			} else {
-				pw.println("Failed to make a new reimbursement. You will not be redirected to the main menu");
+				pw.println("Failed to make a new reimbursement. You will now be redirected to the main menu");
 			}
 
 			resp.setHeader("Refresh", "3; URL=main-menu");
@@ -54,5 +54,6 @@ public class CreateReimbursement extends HttpServlet {
 			resp.setHeader("Refresh", "3; URL=home");
 		}
 
+		pw.close();
 	}
 }

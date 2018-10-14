@@ -31,5 +31,7 @@ public class MainMenu extends HttpServlet {
 			pw.println("BRO YOU GOTTA LOGIN FIRST!! WE ARE TAKING YOU HOME TO LOGIN MY DUDE");
 			resp.setHeader("Refresh", "3; URL=home");
 		}
+		
+		pw.close();
 	}
 }

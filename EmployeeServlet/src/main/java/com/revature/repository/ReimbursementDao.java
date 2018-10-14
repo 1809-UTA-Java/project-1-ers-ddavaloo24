@@ -92,4 +92,30 @@ public class ReimbursementDao {
 
 		return null;
 	}
+	
+	public static boolean deleteReimbursementByID(int id) {
+		PreparedStatement ps = null;
+		String sql;
+
+		try (Connection conn = ConnectionUtil.getConnection()) {
+			sql = "DELETE FROM ERS_REIMBURSEMENTS WHERE R_ID=?";
+
+			ps = conn.prepareStatement(sql);
+			ps.setInt(1, id);
+			int count = ps.executeUpdate();
+			
+			if (count > 0) {
+				return true;
+			} else {
+				return false;
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return false;
+	}
 }
