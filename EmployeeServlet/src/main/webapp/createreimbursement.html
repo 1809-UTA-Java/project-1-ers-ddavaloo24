@@ -1,0 +1,27 @@
+<html>
+	<body>
+		<p> Please fill out the form to submit a reimbursement request. * = required
+		<form action="createreimbursementhandler" method="post">
+			Amount Requesting*:<br>
+			<input type="number" name="amount" min="0" step="0.01" required>
+			<br>
+			<br>
+			Type of Reimbursement*:<br>
+			<input list="types" name="type" required>
+			<datalist id="types">
+			    <option value="Medical">
+			    <option value="Travel">
+			    <option value="Business Expense">
+			</datalist> 
+			<br>
+			<br>
+			Additional Description:<br>
+			<input type="text" name="description" required>
+			<br>
+			<br>
+			Receipt: (Will implement)<br>
+			
+			<button type="submit">Submit</button>
+		</form>
+	</body>
+</html>

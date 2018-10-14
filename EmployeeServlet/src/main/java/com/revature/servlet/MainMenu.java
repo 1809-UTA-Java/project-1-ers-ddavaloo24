@@ -24,13 +24,12 @@ public class MainMenu extends HttpServlet {
 		PrintWriter pw = resp.getWriter();
 
 		if (session != null) {
-			String username = (String) session.getAttribute("username");
-			User user = UserDao.retrieveUser(username);
+			int id = (Integer) session.getAttribute("id");
+			User user = UserDao.retrieveUserByID(id);
 			user.viewHome(pw);
 		} else {
 			pw.println("BRO YOU GOTTA LOGIN FIRST!! WE ARE TAKING YOU HOME TO LOGIN MY DUDE");
 			resp.setHeader("Refresh", "3; URL=home");
 		}
-
 	}
 }
