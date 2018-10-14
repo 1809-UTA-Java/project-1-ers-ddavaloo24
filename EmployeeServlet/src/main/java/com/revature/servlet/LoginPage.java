@@ -10,8 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.revature.model.EmployeeUser;
-import com.revature.model.ManagerUser;
 import com.revature.model.User;
 
 @SuppressWarnings("serial")
@@ -20,6 +18,11 @@ public class LoginPage extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		
+		HttpSession pastSesh = req.getSession(false);
+		if(pastSesh != null) {
+			pastSesh.invalidate();
+		}
 
 		PrintWriter pw = resp.getWriter();
 
@@ -30,6 +33,7 @@ public class LoginPage extends HttpServlet {
 
 		if (user != null) {
 			HttpSession session = req.getSession(true);
+			session.setAttribute("id", user.getId());
 			session.setAttribute("username", username);
 			
 			// TODO: MAYBE ADD MORE ATTRIBUTES TO TAKE WITH ME LATER

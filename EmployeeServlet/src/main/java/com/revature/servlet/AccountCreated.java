@@ -51,15 +51,15 @@ public class AccountCreated extends HttpServlet {
 			pw.println("Congrats on the new account! You will now be redirected to the home page");
 
 		} else if (!firstCheck || !lastCheck) {
-			pw.println("Failed to create the account. You will not be redirected to the home page");
+			pw.println("Failed to create the account. You will now be redirected to the home page");
 			pw.println("<br>");
 			pw.println("Please make sure your first and last name meet the requirements");
 		} else if (!userCheck) {
-			pw.println("Failed to create the account. You will not be redirected to the home page ");
+			pw.println("Failed to create the account. You will now be redirected to the home page ");
 			pw.println("<br>");
 			pw.println("Make sure your username is unique and meet the size requirements and contains no spaces");
 		} else if (!passCheck) {
-			pw.println("Failed to create the account. You will not be redirected to the home page");
+			pw.println("Failed to create the account. You will now be redirected to the home page");
 			pw.println("<br>");
 			pw.println("Please make sure your passowrd has no spaces and meets the size requirements");
 		}

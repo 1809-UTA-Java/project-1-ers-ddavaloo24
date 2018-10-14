@@ -53,8 +53,43 @@ FOREIGN KEY (RT_TYPE) REFERENCES ERS_REIMBURSEMENT_TYPE(RT_ID);
 ALTER TABLE ERS_REIMBURSEMENTS ADD CONSTRAINT FK_RTSTATUS
 FOREIGN KEY (RT_STATUS) REFERENCES ERS_REIMBURSEMENT_STATUS(RS_ID);
 
+CREATE OR REPLACE TRIGGER TRINSERTUSER
+BEFORE INSERT ON ERS_USERS
+FOR EACH ROW
+BEGIN
+	SELECT ERS_USERS_INC.NEXTVAL INTO :NEW.U_ID FROM DUAL;
+END;
+/
+
+CREATE OR REPLACE TRIGGER TRINSERTREIMBURSEMENT
+BEFORE INSERT ON ERS_REIMBURSEMENTS
+FOR EACH ROW
+BEGIN
+	SELECT REIMBURSEMENT.NEXTVAL INTO :NEW.R_ID FROM DUAL;
+END;
+/
+
 INSERT INTO ers_user_roles VALUES(1, 'Employee');
 INSERT INTO ers_user_roles VALUES(2, 'Manager');
+
+INSERT INTO ers_reimbursement_type VALUES(1, 'Medical');
+INSERT INTO ers_reimbursement_type VALUES(2, 'Travel');
+INSERT INTO ers_reimbursement_type VALUES(3, 'Business Expense');
+
+INSERT INTO ers_reimbursement_status VALUES(1, 'Pending');
+INSERT INTO ers_reimbursement_status VALUES(2, 'Approved');
+INSERT INTO ers_reimbursement_status VALUES(3, 'Denied');
+
+
+/*Create a default employee*/
+INSERT INTO ers_users(U_USERNAME, U_PASSWORD, U_FIRSTNAME ,U_LASTNAME ,U_EMAIL ,UR_ID) VALUES('ddavaloo24', 'Football', 'Daria', 'Davaloo', 'daria.davaloo@gmail.com', 1);
+INSERT INTO ers_users VALUES(0, 'baseAdmin', 'baseAdmin', 'base', 'base', null, 2);
+
+UPDATE ers_users SET u_id=0 WHERE u_username='baseAdmin';
+
+COMMIT;
+
+
 
 
 	

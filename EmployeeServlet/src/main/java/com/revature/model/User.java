@@ -6,6 +6,7 @@ import com.revature.repository.UserDao;
 
 public abstract class User {
 
+	protected int id;
 	protected String firstName;
 	protected String lastName;
 	protected String username;
@@ -13,7 +14,9 @@ public abstract class User {
 	protected String email;
 	protected int position;
 
-	public User(String fn, String ln, String un, String pw, String em, int pos) {
+	//With ID
+	public User(int id, String fn, String ln, String un, String pw, String em, int pos) {
+		this.id = id;
 		this.firstName = fn;
 		this.lastName = ln;
 		this.username = un;
@@ -21,28 +24,37 @@ public abstract class User {
 		this.email = em;
 		this.position = pos;
 	}
+	
+	//WITHOUT ID
+	public User(String firstName, String lastName, String username, String password, String email, int position) {
+		super();
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.username = username;
+		this.password = password;
+		this.email = email;
+		this.position = position;
+	}
+
 
 	public static User login(String username, String password) {
 
 		boolean existance = UserDao.checkUsernammePassword(username, password);
-
 		if (!existance)
 			return null;
 
 		return UserDao.loginUser(username, password);
 	}
 
-	public abstract void logout();
+	public abstract void viewHome(PrintWriter pw, String name);
 
-	public abstract void viewHome(PrintWriter pw);
-
-	public abstract void viewPendingReqs();
-
-	public abstract void viewInfo();
+	public abstract String viewInfo();
 
 	
-	
-	
+	public int getId() {
+		return id;
+	}
+
 	public String getFirstName() {
 		return firstName;
 	}
