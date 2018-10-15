@@ -13,7 +13,9 @@ import javax.servlet.http.HttpSession;
 
 import com.revature.model.EmployeeUser;
 import com.revature.model.ManagerUser;
+import com.revature.model.Reimbursement;
 import com.revature.model.User;
+import com.revature.repository.ReimbursementDao;
 import com.revature.repository.UserDao;
 
 @WebServlet("/employees/*")
@@ -47,7 +49,7 @@ public class EmployeeInformation extends HttpServlet {
 						pw.println("</a>");
 					}
 				}
-
+				
 				String[] pathSplits = path.split("/");
 
 				if (pathSplits.length != 2) {
@@ -56,21 +58,36 @@ public class EmployeeInformation extends HttpServlet {
 				}
 
 				int empID = Integer.parseInt(pathSplits[1]);
+				ArrayList<Reimbursement> reim = ReimbursementDao.retrieveReimbursementsByAuthor(empID);
 				EmployeeUser found = null;
+				
 				for (EmployeeUser e : emps) {
-					if (e.getId() == id) {
+					if (e.getId() == empID) {
 						found = e;
 					}
 				}
-
+				
 				if (found != null) {
-
 					if (session.getAttribute("empID") != null) {
 						session.removeAttribute("empID");
 					}
 
 					session.setAttribute("empID", found.getId());
 					found.viewAllInfo(pw);
+					
+					int i = 0;
+					pw.println("Pending Requests: \n");
+					for (Reimbursement re : reim) {
+						if (re.getStatus() == 1) {
+							pw.println("<br>");
+							pw.println("<a href=\"/ERS-Servlet/reimbursements/" + re.getId() + "\">");
+							pw.println(re.viewReimbursement());
+							pw.println("</a>");
+							i++;
+						}
+					}
+					if (i == 0)
+						pw.println("None");
 				}
 
 			} else if (user instanceof EmployeeUser) {
@@ -79,7 +96,7 @@ public class EmployeeInformation extends HttpServlet {
 					resp.setHeader("Refresh", "3; URL=/ERS-Servlet/main-menu");
 					return;
 				}
-
+				
 				String[] pathSplits = path.split("/");
 
 				if (pathSplits.length != 2) {
@@ -101,6 +118,22 @@ public class EmployeeInformation extends HttpServlet {
 
 				session.setAttribute("empID", user.getId());
 				((EmployeeUser) user).viewAllInfo(pw);
+				pw.println("<form action=\"updateinfo\" method=\"post\">");		
+				pw.println("Change account information:<br><br>\n"
+						+ "	Information field you want to change:<br>\n" + 
+						"	<input list=\"changeinfo\" name=\"changeinfo\" required>\n" + 
+						"	<datalist id=\"changeinfo\">\n" + 
+						"	    <option value=\"First Name\">\n" + 
+						"	    <option value=\"Last Name\">\n" + 
+						"	    <option value=\"Email\">\n" + 
+						"	</datalist> ");
+				pw.println("<br>");
+				pw.println("Update field to:<br>\n" + 
+						"			<input type=\"text\" name=\"field\" required>\n" + 
+						"			<br>\n" + 
+						"			<br>");
+				pw.println("<button type=\"submit\">Change Info</button>");
+				pw.println("</form>");
 			}
 
 			pw.println("</body></html>");

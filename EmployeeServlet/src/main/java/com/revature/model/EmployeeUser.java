@@ -51,23 +51,6 @@ public class EmployeeUser extends User {
 		pw.println("<br>");
 		pw.println("<br>");
 		pw.println("<br>");
-		
-		pw.println("<form action=\"updateinfo\" method=\"post\">");		
-		pw.println("Change account information:<br><br>\n"
-				+ "	Information field you want to change:<br>\n" + 
-				"	<input list=\"changeinfo\" name=\"changeinfo\" required>\n" + 
-				"	<datalist id=\"changeinfo\">\n" + 
-				"	    <option value=\"First Name\">\n" + 
-				"	    <option value=\"Last Name\">\n" + 
-				"	    <option value=\"Email\">\n" + 
-				"	</datalist> ");
-		pw.println("<br>");
-		pw.println("Update field to:<br>\n" + 
-				"			<input type=\"text\" name=\"field\" required>\n" + 
-				"			<br>\n" + 
-				"			<br>");
-		pw.println("<button type=\"submit\">Change Info</button>");
-		pw.println("</form>");
 	}
 
 }

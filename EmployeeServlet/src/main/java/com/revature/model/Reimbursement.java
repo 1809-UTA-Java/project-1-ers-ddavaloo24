@@ -55,8 +55,17 @@ public class Reimbursement {
 		pw.println("<br>Description: " + description + "<br>");
 		pw.println("<br>Date and Time submitted: " + time_submitted + "<br>");
 		pw.println("<br>Date and Time resolved: " + time_resolved + "<br>");
-		pw.println("<br>Request Type: " + type + "<br>");
-
+		
+		if(type == 1) {
+			pw.println("<br>Request Type: Medical<br>");
+		}
+		else if(type == 2) {
+			pw.println("<br>Request Type: Travel<br>");
+		}
+		else if(type == 3) {
+			pw.println("<br>Request Type: Business Expense<br>");
+		}
+		
 		if (status == 1) {
 			pw.println("<br>Status: Pending<br>");
 		}

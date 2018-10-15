@@ -21,9 +21,18 @@ public class ManagerUser extends User {
 		pw.println("<html> <body> ");
 		pw.println("THIS IS THE MANAGER HOME PAGE");
 		pw.println("<br>");
+		pw.println("<br>");
+		pw.println("HELLO " + name);
+		pw.println("<br>");
+		pw.println("<br>");
 		pw.println("<a href=\"/ERS-Servlet/reimbursements\">All Reimbursements</a>");
 		pw.println("<br>");
+		pw.println("<br>");
+		pw.println("<a href=\"/ERS-Servlet/employees\">View Employee Information</a>");
+		pw.println("<br>");
+		pw.println("<br>");
 		pw.println("<a href=\"main-menu/logout\">Logout</a>");
+		pw.println("<br>");
 		pw.println("<br>");
 		pw.println("</body> </html> ");
 	}
