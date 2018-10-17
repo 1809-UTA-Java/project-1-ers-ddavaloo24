@@ -1,51 +1,100 @@
 <html>
-	<body>
-		<p> Hello! Make an account! </p>
-		<p> * = required </p>
-		<form action="accountcreated" method="post">
-			Position*:<br>
-			<input list="positions" name="position" required>
-			<datalist id="positions">
-			    <option value="Employee">
-			    <option value="Manager">
-			</datalist> 
-			<br>
-			<br>
-			First Name*:<br>
-			<input type="text" name="firstName" required>
-			<br>
-			<br>
-			Last Name*:<br>
-			<input type="text" name="lastName" required>
-			<br>
-			<br>
-			Username*:<br>
-			<input type="text" name="username" required>
-			<br>
-			<br>
-			Password*:<br>
-			<input type="password" name="password" required>
-			<br>
-			<br>
-			Email:<br>
-			<input type="email" name="email">
-			<br>
-			<br>
-			<button type="submit">Create Account</button>
-		</form>
-		
-		<p> Login here my dude </p>
-		<form action="logging" method="post">
-			Username:<br>
-			<input type="text" name="username" required>
-			<br>
-			<br>
-			Password:<br>
-			<input type="password" name="password" required>
-			<br>
-			<br>
-			<button type="submit">Login</button>
-		</form>
-		
-	</body>
+
+<style>
+body {
+	background-color: #f27171;
+}
+
+p, form {
+	margin: auto;
+	text-align: center;
+}
+
+button {
+	padding:3px 6px;
+	margin-top: 15px;
+}
+
+a:link, a:visited {
+    background-color: #e94949;
+    color: white;
+    text-align: center; 
+    text-decoration: none;
+    display: inline-block;
+    padding: 20px;
+	margin: auto;
+	margin-top: -13px;
+}
+
+a:hover, a:active {
+    background-color: #e22525;
+    padding: 20px;
+	margin: auto;
+	margin-top: -13px;
+}
+
+#head {
+	margin: auto;
+	margin-top: 200px;
+	text-align: center;
+	font-size: 45px;
+}
+
+#message {
+	margin: auto;
+	text-align: center;
+	padding: 15px;
+	font-size: 24px;
+	font-weight: bold;
+}
+
+#field {
+	margin: auto;
+	text-align: center;
+	padding: 13px;
+	padding-bottom: 3px;
+}
+
+#loginbox {
+	margin: auto;
+	margin-top: 25px;
+	width: 400px;
+	height: 200px;
+	padding: 30px;
+	padding-top: 10px;
+	background-color: white;
+}
+
+#accountcre {
+	width: 400px;
+	height: 40px;
+	margin: auto;
+	margin-top: 10px;
+	padding: 45px 30px;
+	background-color: white;
+	text-align: center;
+}
+</style>
+
+<body>
+
+	<h1 id="head">Welcome to the ERS</h1>
+
+	<div id="loginbox">
+		<p id ="message">Please Login</p>
+		<div>
+			<form action="logging" method="post">
+				<p id="field">Username</p>
+				<input type="text" name="username" size="21" required> <br>
+				<p id="field">Password</p>
+				<input type="password" name="password" size="21" required> <br>
+				<button type="submit">Login</button>
+			</form>
+		</div>
+	</div>
+
+	<div id="accountcre">
+		<a href="makeaccount.html">Create an Account</a>
+	</div>
+</body>
 </html>

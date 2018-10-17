@@ -17,6 +17,7 @@ import com.revature.model.Reimbursement;
 import com.revature.model.User;
 import com.revature.repository.ReimbursementDao;
 import com.revature.repository.UserDao;
+import com.revature.util.StyleUtil;
 
 @WebServlet("/reimbursements/*")
 @SuppressWarnings("serial")
@@ -37,17 +38,19 @@ public class ViewReimbursements extends HttpServlet {
 
 			if (user instanceof ManagerUser) {
 				reim = ReimbursementDao.retrieveAllReimbursements();
+				StyleUtil.managerViewReimbursementStyle(pw);
 
 			} else if (user instanceof EmployeeUser) {
 				reim = ReimbursementDao.retrieveReimbursementsByAuthor(id);
-
+				StyleUtil.employeeViewReimbursementStyle(pw);
 			}
 
-			pw.println("<html><body>");
-
 			if (path == null || path.equals("/")) {
+
+				pw.println("<div id=\"options\">");
+
 				int i = 0;
-				pw.println("Pending Requests: \n");
+				pw.println("Pending Requests \n");
 				for (Reimbursement re : reim) {
 					if (re.getStatus() == 1) {
 						pw.println("<br>");
@@ -58,10 +61,10 @@ public class ViewReimbursements extends HttpServlet {
 					}
 				}
 				if (i == 0)
-					pw.println("None");
+					pw.println("<br>None");
 
 				i = 0;
-				pw.println("<br><br>Approved Requests: \n");
+				pw.println("<br><br>Approved Requests \n");
 				for (Reimbursement re : reim) {
 					if (re.getStatus() == 2) {
 						pw.println("<br>");
@@ -72,11 +75,11 @@ public class ViewReimbursements extends HttpServlet {
 					}
 				}
 				if (i == 0)
-					pw.println("None");
+					pw.println("<br>None");
 
 				if (user instanceof EmployeeUser) {
 					i = 0;
-					pw.println("<br><br>Denied Requests: \n");
+					pw.println("<br><br>Denied Requests \n");
 					for (Reimbursement re : reim) {
 						if (re.getStatus() == 3) {
 							pw.println("<br>");
@@ -87,12 +90,13 @@ public class ViewReimbursements extends HttpServlet {
 						}
 					}
 					if (i == 0)
-						pw.println("None");
+						pw.println("<br>None");
+
+					pw.println("</div>");
 				}
 			}
 
 			String[] pathSplits = path.split("/");
-
 			if (pathSplits.length != 2) {
 				resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
 				return;
@@ -108,49 +112,57 @@ public class ViewReimbursements extends HttpServlet {
 
 			if (found != null) {
 
+				User resolver = UserDao.retrieveUserByID(found.getId_resolver());
+				String name = resolver.getFirstName() + " " + resolver.getLastName();
+
 				if (session.getAttribute("reimID") != null) {
 					session.removeAttribute("reimID");
 				}
-
 				session.setAttribute("reimID", found.getId());
+				
+				session.removeAttribute("imageBytes");
 				found.viewReimbursementFull(pw);
+
+				if (found.getImage() != null) {
+					session.setAttribute("imageBytes", found.getImage());
+					pw.println("<a href=\"/ERS-Servlet/receipt/" + found.getId() +  "\">Receipt</a>");
+				}
+				pw.println("</div>");
+
 				if (user.getPosition() == 1 && found.getStatus() == 1) {
+
+					pw.println("<div id=\"accountapp\">");
 					pw.println("<form action=\"cancel\" method=\"post\">"
 							+ "<button type=\"submit\">Delete Current Request</button>" + "</form>");
-				} else if(user.getPosition() == 2) {
+					pw.println("</div>");
 
-					if(found.getStatus() == 1) {
-						pw.println("<br>");
-						pw.println("<br>");
-						pw.println("<form action=\"approveordeny\" method=\"post\">");		
-						pw.println("Choose to approve or deny the request:<br>\n"  +
-								"	<input list=\"approveordeny\" name=\"approveordeny\" required>\n" + 
-								"	<datalist id=\"approveordeny\">\n" + 
-								"	    <option value=\"Approve\">\n" + 
-								"	    <option value=\"Deny\">\n" + 
-								"	</datalist> ");
+				} else if (user.getPosition() == 2) {
+
+					pw.println("<div id=\"accountapp\">");
+					if (found.getStatus() == 1) {
+						pw.println("<form action=\"approveordeny\" method=\"post\">");
+						pw.println("<p id=\"field\">Choose to approve or deny the request</p>\n"
+								+ "	<input list=\"approveordeny\" name=\"approveordeny\" required>\n"
+								+ "	<datalist id=\"approveordeny\">\n" + "	  <option value=\"Approve\">\n"
+								+ "	    <option value=\"Deny\">\n" + "	</datalist> ");
 						pw.println("<br>");
 						pw.println("<button type=\"submit\">Confirm</button>");
 						pw.println("</form>");
+
+					} else if (found.getStatus() == 2) {
+						pw.println("<p id=\"field\">Approved by</p><br>" + name);
+					} else {
+						pw.println("<p id=\"field\">Denied by</p><br>" + name);
 					}
-					else if(found.getStatus() == 2) {
-						pw.println("Approved by: " + found.getId_resolver());
-					}
-					else {
-						pw.println("Denied by: " + found.getId_resolver());
-					}
-						
-						
-						
-						
-						
-						
-					
+
+					pw.println("</div>");
 				}
 			}
-
 		} else {
-			pw.println("BRO YOU GOTTA LOGIN FIRST!! WE ARE TAKING YOU HOME TO LOGIN MY DUDE");
+			pw.println("<p style=\"text-align:center;font-size:40px;margin-top:200px;font-weight:bold;\">"
+					+ "You must be logged in to access this page.<br>Sending you to the login page</p>");
+			pw.println("</body> </html> ");
+
 			resp.setHeader("Refresh", "3; URL=home");
 		}
 

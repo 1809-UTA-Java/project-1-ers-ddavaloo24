@@ -27,22 +27,32 @@ public class CancelReimbursement extends HttpServlet {
 		HttpSession session = req.getSession(false);
 		PrintWriter pw = resp.getWriter();
 		
+		pw.println("<html><body style=\"background-color: lightblue;\">");
+		
 		if(session != null) {
 			int reimID = (Integer) session.getAttribute("reimID");
 			
 			boolean result = ReimbursementDao.deleteReimbursementByID(reimID);
 			if(result) {
-				pw.println("Deletion successful! Redirecting back to the main menu");
+				pw.println("<p style=\"text-align:center;font-size:40px;margin-top:200px;font-weight:bold;\">"
+						+ "Deletion successful! Redirecting back to the main menu</p>");
 			} else {
-				pw.println("Deletion failed! Redirecting back to the main menu");
+				pw.println("<p style=\"text-align:center;font-size:40px;margin-top:200px;font-weight:bold;\">"
+						+ "Deletion failed! Redirecting back to the main menu</p>");
 			}
 			
 			resp.setHeader("Refresh", "3; URL=/ERS-Servlet/main-menu");
 			
 		} else {
-			pw.println("BRO YOU GOTTA LOGIN FIRST!! WE ARE TAKING YOU HOME TO LOGIN MY DUDE");
+			pw.println("<p style=\"text-align:center;font-size:40px;margin-top:200px;font-weight:bold;\">"
+					+ "You must be logged in to access this page.<br>Sending you to the login page</p>");
+			pw.println("</body> </html> ");
 			resp.setHeader("Refresh", "3; URL=home");
 		}
+		
+		pw.println("</body></html>");
+		
+		pw.close();
 		
 	}
 }

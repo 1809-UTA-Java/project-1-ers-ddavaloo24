@@ -1,0 +1,70 @@
+<html>
+
+<style>
+body {
+	background-color: #f27171;
+}
+
+p, form {
+	margin: auto;
+	text-align: center;
+}
+
+button {
+	padding: 3px 6px;
+	margin-top: 15px;
+}
+
+#message {
+	margin: auto;
+	text-align: center;
+	padding: 15px;
+	font-size: 24px;
+	font-weight: bold;
+}
+
+#field {
+	margin: auto;
+	text-align: center;
+	padding: 13px;
+	padding-bottom: 3px;
+}
+
+#loginbox {
+	margin: auto;
+	margin-top: 200px;
+	width: 400px;
+	height: 500px;
+	padding: 30px;
+	padding-top: 10px;
+	background-color: white;
+}
+</style>
+
+<body>
+	<div id="loginbox">
+		<p id="message">
+			Hello! Make an account! <br> * = required
+		</p>
+		<form action="accountcreated" method="post">
+			<p>Position*:</p>
+			<input list="positions" name="position" required>
+			<datalist id="positions">
+				<option value="Employee">
+				<option value="Manager">
+			</datalist>
+			<p id="field">First Name*:</p>
+			<input type="text" name="firstName" required> <br>
+			<p id="field">Last Name*:</p>
+			<input type="text" name="lastName" required> <br>
+			<p id="field">Username*:</p>
+			<input type="text" name="username" required> <br>
+			<p id="field">Password*:</p>
+			<input type="password" name="password" required> <br>
+			<p id="field">Email:</p>
+			<input type="email" name="email"> <br> <br>
+			<button type="submit">Create Account</button>
+		</form>
+	</div>
+</body>
+</html>

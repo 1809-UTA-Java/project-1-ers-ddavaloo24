@@ -18,9 +18,10 @@ public class LoginPage extends HttpServlet {
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
+
 		HttpSession pastSesh = req.getSession(false);
-		if(pastSesh != null) {
+		
+		if (pastSesh != null) {
 			pastSesh.invalidate();
 		}
 
@@ -35,15 +36,21 @@ public class LoginPage extends HttpServlet {
 			HttpSession session = req.getSession(true);
 			session.setAttribute("id", user.getId());
 			session.setAttribute("username", username);
-			
-			// TODO: MAYBE ADD MORE ATTRIBUTES TO TAKE WITH ME LATER
-			
 			resp.sendRedirect("main-menu");
+		}
+		
+		else {
+			pw.println("<html><body style=\"background-color: #f27171;\">");
+
+			pw.println("<p style=\"text-align:center;font-size:40px;margin-top:200px;font-weight:bold;\">"
+					+ "Failed to login. You will not be redirected to the home page" + "</p>");
 			
-		} else {
-			pw.println("Failed to login. You will not be redirected to the home page");
+			pw.println("</body></html>");
+			
 			resp.setHeader("Refresh", "2; URL=home");
 		}
+		
+		pw.close();
 
 	}
 

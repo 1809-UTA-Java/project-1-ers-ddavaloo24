@@ -1,6 +1,8 @@
 package com.revature.repository;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.sql.Blob;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -8,7 +10,6 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
-import com.revature.model.EmployeeUser;
 import com.revature.model.Reimbursement;
 import com.revature.util.ConnectionUtil;
 
@@ -18,17 +19,21 @@ public class ReimbursementDao {
 		String sql;
 
 		try (Connection conn = ConnectionUtil.getConnection()) {
-			sql = "INSERT INTO ERS_REIMBURSEMENTS(R_AMOUNT, R_DESCRIPTION, R_SUBMITTED, R_RESOLVED, U_ID_AUTHOR, U_ID_RESOLVER, RT_TYPE, RT_STATUS) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
+			sql = "INSERT INTO ERS_REIMBURSEMENTS(R_AMOUNT, R_DESCRIPTION, R_RECEIPT, R_SUBMITTED, R_RESOLVED, U_ID_AUTHOR, U_ID_RESOLVER, RT_TYPE, RT_STATUS) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 			ps = conn.prepareStatement(sql);
 			ps.setDouble(1, reim.getAmount());
 			ps.setString(2, reim.getDescription());
-			ps.setTimestamp(3, reim.getTime_submitted());
-			ps.setTimestamp(4, reim.getTime_resolved());
-			ps.setInt(5, reim.getId_author());
-			ps.setInt(6, reim.getId_resolver());
-			ps.setInt(7, reim.getType());
-			ps.setInt(8, reim.getStatus());
+
+			if (reim.getImage() != null) {
+				ps.setBinaryStream(3, new ByteArrayInputStream(reim.getImage()));
+			}
+			ps.setTimestamp(4, reim.getTime_submitted());
+			ps.setTimestamp(5, reim.getTime_resolved());
+			ps.setInt(6, reim.getId_author());
+			ps.setInt(7, reim.getId_resolver());
+			ps.setInt(8, reim.getType());
+			ps.setInt(9, reim.getStatus());
 
 			int count = ps.executeUpdate();
 			if (count > 0) {
@@ -53,6 +58,7 @@ public class ReimbursementDao {
 		int r_id = 0;
 		double amt = 0;
 		String desc = "";
+		byte[] image = null;
 		Timestamp time_sub;
 		Timestamp time_res;
 		int id_res;
@@ -77,7 +83,12 @@ public class ReimbursementDao {
 				type = rs.getInt("RT_TYPE");
 				status = rs.getInt("RT_STATUS");
 
-				reim.add(new Reimbursement(r_id, amt, desc, time_sub, time_res, id, id_res, type, status));
+				if (rs.getBlob("R_RECEIPT") != null) {
+					Blob blob = rs.getBlob("R_RECEIPT");
+					image = blob.getBytes(1L, (int) blob.length());
+				}
+				
+				reim.add(new Reimbursement(r_id, amt, desc, image, time_sub, time_res, id, id_res, type, status));
 			}
 
 			ps.close();
@@ -128,7 +139,7 @@ public class ReimbursementDao {
 		int r_id = 0;
 		double amt = 0;
 		String desc = "";
-		// RECEIPT
+		byte[] image = null;
 		Timestamp time_sub;
 		Timestamp time_res;
 		int id_auth = 0;
@@ -154,8 +165,16 @@ public class ReimbursementDao {
 				id_res = rs.getInt("U_ID_RESOLVER");
 				type = rs.getInt("RT_TYPE");
 				status = rs.getInt("RT_STATUS");
+				
+				if (rs.getBlob("R_RECEIPT") != null) {
+					Blob blob = rs.getBlob("R_RECEIPT");
+					image = blob.getBytes(1L, (int) blob.length());
+				}
+				else {
+					image = null;
+				}
 
-				reims.add(new Reimbursement(r_id, amt, desc, time_sub, time_res, id_auth, id_res, type, status));
+				reims.add(new Reimbursement(r_id, amt, desc, image, time_sub, time_res, id_auth, id_res, type, status));
 			}
 
 			ps.close();
@@ -186,12 +205,12 @@ public class ReimbursementDao {
 				ps.setInt(1, 2);
 			else if (approveOrDeny.equals("Deny"))
 				ps.setInt(1, 3);
-			
+
 			ps.setTimestamp(2, new Timestamp(System.currentTimeMillis()));
 			ps.setInt(3, resID);
-			
+
 			ps.setInt(4, reimID);
-			
+
 			int count = ps.executeUpdate();
 			if (count > 0) {
 				return true;

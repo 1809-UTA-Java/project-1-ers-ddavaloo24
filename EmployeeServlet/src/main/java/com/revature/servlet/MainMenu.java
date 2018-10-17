@@ -29,10 +29,14 @@ public class MainMenu extends HttpServlet {
 			String name = user.getFirstName() + " " + user.getLastName();
 			user.viewHome(pw, name);
 		} else {
-			pw.println("BRO YOU GOTTA LOGIN FIRST!! WE ARE TAKING YOU HOME TO LOGIN MY DUDE");
+
+			pw.println("<p style=\"text-align:center;font-size:40px;margin-top:200px;font-weight:bold;\">"
+					+ "You must be logged in to access this page.<br>Sending you to the login page</p>");
+			pw.println("</body> </html> ");			
+			
 			resp.setHeader("Refresh", "3; URL=home");
 		}
-		
+
 		pw.close();
 	}
 }

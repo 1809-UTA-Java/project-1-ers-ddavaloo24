@@ -3,11 +3,13 @@ package com.revature.model;
 import java.io.PrintWriter;
 import java.sql.Timestamp;
 
+import com.revature.repository.UserDao;
+
 public class Reimbursement {
 	int id;
 	double amount;
 	String description;
-	// RECEIPT
+	byte[] image;
 	Timestamp time_submitted;
 	Timestamp time_resolved;
 	int id_author;
@@ -15,12 +17,13 @@ public class Reimbursement {
 	int type;
 	int status;
 
-	public Reimbursement(int id, double amount, String description, Timestamp time_submitted, Timestamp time_resolved,
+	public Reimbursement(int id, double amount, String description, byte[] image, Timestamp time_submitted, Timestamp time_resolved,
 			int id_author, int id_resolver, int type, int status) {
 		super();
 		this.id = id;
 		this.amount = amount;
 		this.description = description;
+		this.image = image;
 		this.time_submitted = time_submitted;
 		this.time_resolved = time_resolved;
 		this.id_author = id_author;
@@ -29,10 +32,11 @@ public class Reimbursement {
 		this.status = status;
 	}
 
-	public Reimbursement(double amount, String description, int id_author, int type, int status) {
+	public Reimbursement(double amount, String description, byte[] image, int id_author, int type, int status) {
 		super();
 		this.amount = amount;
 		this.description = description;
+		this.image = image;
 		this.time_submitted = new Timestamp(System.currentTimeMillis());
 		this.time_resolved = null;
 		this.id_author = id_author;
@@ -47,35 +51,34 @@ public class Reimbursement {
 	}
 
 	public void viewReimbursementFull(PrintWriter pw) {
-		
+
+		User user = UserDao.retrieveUserByID(id_author);
+		String name = user.getFirstName() + " " + user.getLastName();
 		String strDouble = String.format("%.2f", amount);
-		
-		pw.println("Reimbursement ID: " + id + "<br>");
-		pw.println("<br>Amount Requested: $" + strDouble + "<br>");
-		pw.println("<br>Description: " + description + "<br>");
-		pw.println("<br>Date and Time submitted: " + time_submitted + "<br>");
-		pw.println("<br>Date and Time resolved: " + time_resolved + "<br>");
-		
-		if(type == 1) {
-			pw.println("<br>Request Type: Medical<br>");
+
+		pw.println("<div id=\"options\">");
+
+		pw.println("<p id=\"message\">Reimbursement Author:<br>" + name + "</p><br>");
+		pw.println("<p id=\"message\">Amount Requested:<br>$" + strDouble + "</p><br>");
+		pw.println("<p id=\"message\">Description:<br>" + description + "</p><br>");
+		pw.println("<p id=\"message\">Date and Time submitted:<br>" + time_submitted + "</p><br>");
+		pw.println("<p id=\"message\">Date and Time resolved:<br>" + time_resolved + "</p><br>");
+
+		if (type == 1) {
+			pw.println("<p id=\"message\">Request Type:<br>Medical</p><br>");
+		} else if (type == 2) {
+			pw.println("<p id=\"message\">Request Type:<br>Travel</p><br>");
+		} else if (type == 3) {
+			pw.println("<p id=\"message\">Request Type:<br>Business Expense</p><br>");
 		}
-		else if(type == 2) {
-			pw.println("<br>Request Type: Travel<br>");
-		}
-		else if(type == 3) {
-			pw.println("<br>Request Type: Business Expense<br>");
-		}
-		
+
 		if (status == 1) {
-			pw.println("<br>Status: Pending<br>");
-		}
-		else if(status == 2) {
-			pw.println("<br>Status: Approved<br>");
+			pw.println("<p id=\"message\">Status:<br>Pending</p><br>");
+		} else if (status == 2) {
+			pw.println("<p id=\"message\">Status:<br>Approved</p><br>");
 		} else {
-			pw.println("<br>Status: Denied<br>");
+			pw.println("<p id=\"message\">Status:<br>Denied</p><br>");
 		}
-		
-		pw.println("<br>");		
 	}
 
 	public int getId() {
@@ -88,6 +91,10 @@ public class Reimbursement {
 
 	public String getDescription() {
 		return description;
+	}
+
+	public byte[] getImage() {
+		return image;
 	}
 
 	public Timestamp getTime_submitted() {

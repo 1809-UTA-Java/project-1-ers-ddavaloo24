@@ -83,6 +83,7 @@ INSERT INTO ers_reimbursement_status VALUES(3, 'Denied');
 
 /*Create a default employee*/
 INSERT INTO ers_users(U_USERNAME, U_PASSWORD, U_FIRSTNAME ,U_LASTNAME ,U_EMAIL ,UR_ID) VALUES('ddavaloo24', 'Football', 'Daria', 'Davaloo', 'daria.davaloo@gmail.com', 1);
+INSERT INTO ers_users(U_USERNAME, U_PASSWORD, U_FIRSTNAME ,U_LASTNAME ,U_EMAIL ,UR_ID) VALUES('timdeck', 'decktim', 'Tim', 'Deckert', 'tim.deckert@gmail.com', 2);
 INSERT INTO ers_users VALUES(0, 'baseAdmin', 'baseAdmin', 'base', 'base', null, 2);
 
 UPDATE ers_users SET u_id=0 WHERE u_username='baseAdmin';
