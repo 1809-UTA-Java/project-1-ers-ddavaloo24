@@ -48,26 +48,33 @@ public class AccountCreated extends HttpServlet {
 			}
 
 			UserDao.insertUser(user);
-			pw.println("<p>Congrats on the new account! You will now be redirected to the home page</p>");
+			pw.println("<p style=\"text-align:center;font-weight:bold;margin-top:100px;\">"
+					+ "Congrats on the new account! You will now be redirected to the home page</p>");
 
 		} else if (!firstCheck || !lastCheck) {
 			pw.println(
-					"<p style=\"text-align:center;\">Failed to create the account. You will now be redirected to the home page</p>");
+					"<p style=\"text-align:center;font-weight:bold;margin-top:100px;font-size:24px;\">"
+					+ "Failed to create the account. You will now be redirected to the home page</p>");
 			pw.println("<br>");
 			pw.println(
-					"<p style=\"text-align:center;\">Please make sure your first and last name meet the requirements</p>");
+					"<p style=\"text-align:center;font-weight:bold;margin-top:100px;font-size:24px;\">"
+					+ " Make sure your first and last name meet the requirements</p>");
 		} else if (!userCheck) {
 			pw.println(
-					"<p style=\"text-align:center;\">Failed to create the account. You will now be redirected to the home page</p>");
+					"<p style=\"text-align:center;font-weight:bold;margin-top:100px;font-size:24px;\">"
+					+ "Failed to create the account. You will now be redirected to the home page</p>");
 			pw.println("<br>");
 			pw.println(
-					"<p style=\"text-align:center;\">Make sure your username is unique and meet the size requirements and contains no spaces</p>");
+					"<p style=\"text-align:center;font-weight:bold;margin-top:100px;font-size:24px;\">"
+					+ "Make sure your username is unique and meet the size requirements and contains no spaces</p>");
 		} else if (!passCheck) {
 			pw.println(
-					"<p style=\"text-align:center;\">Failed to create the account. You will now be redirected to the home page</p>");
+					"<p style=\"text-align:center;font-weight:bold;margin-top:100px;font-size:24px;\">"
+					+ "Failed to create the account. You will now be redirected to the home page</p>");
 			pw.println("<br>");
 			pw.println(
-					"<p style=\"text-align:center;\">Please make sure your passowrd has no spaces and meets the size requirements</p>");
+					"<p style=\"text-align:center;font-weight:bold;margin-top:100px;font-size:24px;\">"
+					+ "Please make sure your passowrd has no spaces and meets the size requirements</p>");
 		}
 		pw.println("</body></html>");
 

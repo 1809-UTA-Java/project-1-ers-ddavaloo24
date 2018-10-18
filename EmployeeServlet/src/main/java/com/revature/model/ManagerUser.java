@@ -43,7 +43,6 @@ public class ManagerUser extends User {
 
 	@Override
 	public String viewInfo() {
-		// TODO Auto-generated method stub
 		return null;
 
 	}

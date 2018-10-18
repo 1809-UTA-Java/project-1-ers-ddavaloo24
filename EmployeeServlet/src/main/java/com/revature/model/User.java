@@ -36,7 +36,6 @@ public abstract class User {
 		this.position = position;
 	}
 
-
 	public static User login(String username, String password) {
 
 		boolean existance = UserDao.checkUsernammePassword(username, password);
@@ -45,11 +44,6 @@ public abstract class User {
 
 		return UserDao.loginUser(username, password);
 	}
-
-	public abstract void viewHome(PrintWriter pw, String name);
-
-	public abstract String viewInfo();
-
 	
 	public int getId() {
 		return id;
@@ -78,4 +72,8 @@ public abstract class User {
 	public int getPosition() {
 		return position;
 	}
+
+	public abstract void viewHome(PrintWriter pw, String name);
+
+	public abstract String viewInfo();
 }

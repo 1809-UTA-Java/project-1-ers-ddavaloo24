@@ -69,17 +69,12 @@ public class EmployeeInformation extends HttpServlet {
 				}
 
 				if (found != null) {
-					if (session.getAttribute("empID") != null) {
-						session.removeAttribute("empID");
-					}
-					
 					pw.println("<div id=\"options\">");
 
-					session.setAttribute("empID", found.getId());
 					found.viewAllInfo(pw);
 
 					int i = 0;
-					pw.println("Pending Requests <br>");
+					pw.println("<p id=\"message\">Pending Requests</p>");
 					for (Reimbursement re : reim) {
 						if (re.getStatus() == 1) {
 							pw.println("<a href=\"/ERS-Servlet/reimbursements/" + re.getId() + "\">");
@@ -90,15 +85,14 @@ public class EmployeeInformation extends HttpServlet {
 					}
 					if (i == 0)
 						pw.println("None");
-					
-					pw.println("</div>");
 
+					pw.println("</div>");
 				}
 
 			} else if (user instanceof EmployeeUser) {
-				
+
 				StyleUtil.employeerViewEmployeeStyle(pw);
-				
+
 				if (path == null || path.equals("/")) {
 					pw.println("YOU DO NOT HAVE ACCESS TO THIS PAGE. REDIRECTING BACK TO THE MAIN MENU");
 					resp.setHeader("Refresh", "3; URL=/ERS-Servlet/main-menu");
@@ -118,23 +112,20 @@ public class EmployeeInformation extends HttpServlet {
 					return;
 				}
 
-				if (session.getAttribute("empID") != null) {
-					session.removeAttribute("empID");
-				}
-				
 				pw.println("<div id=\"options\">");
-
-				session.setAttribute("empID", user.getId());
 				((EmployeeUser) user).viewAllInfo(pw);
-				
 				pw.println("</div>");
+
+				
 				pw.println("<div id=\"accountapp\">");
 				pw.println("<form action=\"updateinfo\" method=\"post\">");
-				pw.println("<p id=\"message\">Change account information:</p><br>\n" + "<p id=\"field\">Information field you want to change:</p>\n"
+				pw.println("<p id=\"message\">Change account information:</p><br>\n"
+						+ "<p id=\"field\">Information field you want to change:</p>\n"
 						+ "	<input list=\"changeinfo\" name=\"changeinfo\" required>\n"
 						+ "	<datalist id=\"changeinfo\">\n" + "<option value=\"First Name\">\n"
 						+ "	    <option value=\"Last Name\">\n" + "<option value=\"Email\">\n" + "	</datalist><br> ");
-				pw.println("<br><p id=\"field\">Update field to:</p>\n" + "<input type=\"text\" name=\"field\" required>\n");
+				pw.println("<br><p id=\"field\">Update field to:</p>\n"
+						+ "<input type=\"text\" name=\"field\" required>\n");
 				pw.println("<br><button type=\"submit\">Change Info</button>");
 				pw.println("</form>");
 				pw.println("</div>");

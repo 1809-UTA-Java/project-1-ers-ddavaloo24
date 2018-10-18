@@ -55,7 +55,6 @@ public class EmployeeUser extends User {
 		pw.println("<p id=\"message\">Email:<br>" + email + "</p>");
 		pw.println("<br>");
 		pw.println("<br>");
-		pw.println("<br>");
 	}
 
 }

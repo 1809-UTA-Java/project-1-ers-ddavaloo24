@@ -42,8 +42,6 @@ public class CreateReimbursement extends HttpServlet {
 				InputStream is = image.getInputStream();
 				bytes = IOUtils.toByteArray(is);
 			}
-			
-			System.out.println(bytes);
 
 			int type;
 			if (typeString.equals("Medical")) {

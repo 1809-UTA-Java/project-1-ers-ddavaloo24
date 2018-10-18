@@ -28,6 +28,9 @@ public class ReimbursementDao {
 			if (reim.getImage() != null) {
 				ps.setBinaryStream(3, new ByteArrayInputStream(reim.getImage()));
 			}
+			else {
+				ps.setObject(3, null);
+			}
 			ps.setTimestamp(4, reim.getTime_submitted());
 			ps.setTimestamp(5, reim.getTime_resolved());
 			ps.setInt(6, reim.getId_author());
@@ -117,7 +120,7 @@ public class ReimbursementDao {
 			ps.setInt(1, id);
 			int count = ps.executeUpdate();
 
-			if (count > 0) {
+			if (count == 1) {
 				return true;
 			} else {
 				return false;
