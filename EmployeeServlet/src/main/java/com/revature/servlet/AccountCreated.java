@@ -36,8 +36,8 @@ public class AccountCreated extends HttpServlet {
 		boolean lastCheck = LoginUtil.nameChecker(lastName);
 		boolean userCheck = LoginUtil.usernameChecker(username);
 		boolean passCheck = LoginUtil.passwordChecker(password);
-		
-		pw.println("<html> <body> ");
+
+		pw.println("<html> <body style=\"background-color: #f27171;\"> ");
 
 		if (firstCheck && lastCheck && userCheck && passCheck) {
 			if (position.equals("Employee")) {
@@ -48,25 +48,38 @@ public class AccountCreated extends HttpServlet {
 			}
 
 			UserDao.insertUser(user);
-			pw.println("Congrats on the new account! You will now be redirected to the home page");
+			pw.println("<p style=\"text-align:center;font-weight:bold;margin-top:100px;\">"
+					+ "Congrats on the new account! You will now be redirected to the home page</p>");
 
 		} else if (!firstCheck || !lastCheck) {
-			pw.println("Failed to create the account. You will now be redirected to the home page");
+			pw.println(
+					"<p style=\"text-align:center;font-weight:bold;margin-top:100px;font-size:24px;\">"
+					+ "Failed to create the account. You will now be redirected to the home page</p>");
 			pw.println("<br>");
-			pw.println("Please make sure your first and last name meet the requirements");
+			pw.println(
+					"<p style=\"text-align:center;font-weight:bold;margin-top:100px;font-size:24px;\">"
+					+ " Make sure your first and last name meet the requirements</p>");
 		} else if (!userCheck) {
-			pw.println("Failed to create the account. You will now be redirected to the home page ");
+			pw.println(
+					"<p style=\"text-align:center;font-weight:bold;margin-top:100px;font-size:24px;\">"
+					+ "Failed to create the account. You will now be redirected to the home page</p>");
 			pw.println("<br>");
-			pw.println("Make sure your username is unique and meet the size requirements and contains no spaces");
+			pw.println(
+					"<p style=\"text-align:center;font-weight:bold;margin-top:100px;font-size:24px;\">"
+					+ "Make sure your username is unique and meet the size requirements and contains no spaces</p>");
 		} else if (!passCheck) {
-			pw.println("Failed to create the account. You will now be redirected to the home page");
+			pw.println(
+					"<p style=\"text-align:center;font-weight:bold;margin-top:100px;font-size:24px;\">"
+					+ "Failed to create the account. You will now be redirected to the home page</p>");
 			pw.println("<br>");
-			pw.println("Please make sure your passowrd has no spaces and meets the size requirements");
+			pw.println(
+					"<p style=\"text-align:center;font-weight:bold;margin-top:100px;font-size:24px;\">"
+					+ "Please make sure your passowrd has no spaces and meets the size requirements</p>");
 		}
-		
 		pw.println("</body></html>");
 
 		resp.setHeader("Refresh", "4; URL=home");
+		pw.close();
 	}
 
 }

@@ -1,20 +1,26 @@
 package com.revature.servlet;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Part;
+
+import org.apache.commons.io.IOUtils;
 
 import com.revature.model.Reimbursement;
 import com.revature.repository.ReimbursementDao;
 
 @WebServlet("/createreimbursementhandler")
 @SuppressWarnings("serial")
+@MultipartConfig
 public class CreateReimbursement extends HttpServlet {
 
 	@Override
@@ -29,6 +35,13 @@ public class CreateReimbursement extends HttpServlet {
 			String typeString = req.getParameter("type");
 			String description = req.getParameter("description");
 			int id_author = (Integer) session.getAttribute("id");
+			byte[] bytes = null;
+
+			if (req.getPart("image") != null) {
+				Part image = req.getPart("image");
+				InputStream is = image.getInputStream();
+				bytes = IOUtils.toByteArray(is);
+			}
 
 			int type;
 			if (typeString.equals("Medical")) {
@@ -39,18 +52,29 @@ public class CreateReimbursement extends HttpServlet {
 				type = 3;
 			}
 
-			Reimbursement reim = new Reimbursement(amount, description, id_author, type, 1);
+			Reimbursement reim = new Reimbursement(amount, description, bytes, id_author, type, 1);
 			boolean result = ReimbursementDao.insertReimbursement(reim);
 
+			pw.println("<html><body style=\"background-color: lightblue;\">");
+
 			if (result) {
-				pw.println("Pending reimbursement created. You will now be redirected to the main menu");
+				pw.println("<p style=\"text-align:center;font-size:40px;margin-top:200px;font-weight:bold;\">"
+						+ "Pending reimbursement created.<br>You will now be redirected to the main menu...</p>");
 			} else {
-				pw.println("Failed to make a new reimbursement. You will now be redirected to the main menu");
+				pw.println("<p style=\"text-align:center;font-size:40px;margin-top:200px;font-weight:bold;\">"
+						+ "Failed to make a new reimbursement.<br>You will now be redirected to the main menu...</p>");
 			}
+
+			pw.println("</body> </html> ");
 
 			resp.setHeader("Refresh", "3; URL=main-menu");
 		} else {
-			pw.println("BRO YOU GOTTA LOGIN FIRST!! WE ARE TAKING YOU HOME TO LOGIN MY DUDE");
+
+			pw.println("<html><body");
+			pw.println("<p style=\"text-align:center;font-size:40px;margin-top:200px;font-weight:bold;\">"
+					+ "You must be logged in to access this page.<br>Sending you to the login page</p>");
+			pw.println("</body> </html> ");
+
 			resp.setHeader("Refresh", "3; URL=home");
 		}
 

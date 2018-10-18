@@ -11,6 +11,7 @@ import com.revature.model.EmployeeUser;
 import com.revature.model.ManagerUser;
 import com.revature.model.User;
 import com.revature.util.ConnectionUtil;
+import com.revature.util.LoginUtil;
 
 public class UserDao {
 	public static boolean insertUser(User user) {
@@ -58,7 +59,6 @@ public class UserDao {
 				int unique = rs.getInt("COUNT(U_USERNAME)");
 
 				if (unique == 1) {
-					System.out.println("Your username already exists. Please try a new one.");
 					return false;
 				}
 			}
@@ -242,19 +242,26 @@ public class UserDao {
 		String sql = "";
 
 		try (Connection conn = ConnectionUtil.getConnection()) {
-			
-			if (changeInfo.equals("First Name"))
+
+			if (changeInfo.equals("First Name")) {
+				if (!LoginUtil.nameChecker(field)) {
+					return false;
+				}
 				sql = "UPDATE ERS_USERS SET U_FIRSTNAME=? WHERE U_ID=?";
-			else if (changeInfo.equals("Last Name"))
+			} else if (changeInfo.equals("Last Name")) {
+				if (!LoginUtil.nameChecker(field)) {
+					return false;
+				}
 				sql = "UPDATE ERS_USERS SET U_LASTNAME=? WHERE U_ID=?";
-			else if (changeInfo.equals("Email"))
+			} else if (changeInfo.equals("Email")) {
 				sql = "UPDATE ERS_USERS SET U_EMAIL=? WHERE U_ID=?";
-			
-			ps = conn.prepareStatement(sql);				
+			}
+
+			ps = conn.prepareStatement(sql);
 			ps.setString(1, field);
 			ps.setInt(2, id);
 			int count = ps.executeUpdate();
-			
+
 			if (count > 0) {
 				return true;
 			} else {

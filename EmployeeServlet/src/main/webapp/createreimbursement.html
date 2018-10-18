@@ -1,27 +1,79 @@
 <html>
-	<body>
-		<p> Please fill out the form to submit a reimbursement request. * = required
-		<form action="createreimbursementhandler" method="post">
-			Amount Requesting*:<br>
-			<input type="number" name="amount" min="0" step="0.01" required>
-			<br>
-			<br>
-			Type of Reimbursement*:<br>
-			<input list="types" name="type" required>
+
+<style>
+body {
+	background-color: lightblue;
+}
+
+p, form {
+	margin: auto;
+	text-align: center;
+}
+
+button {
+	padding: 3px 6px;
+	margin-top: 15px;
+}
+
+#message {
+	margin: auto;
+	text-align: center;
+	padding: 15px;
+	font-size: 24px;
+	font-weight: bold;
+}
+
+#field {
+	margin: auto;
+	text-align: center;
+	padding: 13px;
+	padding-bottom: 3px;
+}
+
+#options {
+	margin: auto;
+	margin-top: 225px;
+	width: 400px;
+	height: 400px;
+	padding: 30px;
+	padding-top: 10px;
+	background-color: white;
+}
+</style>
+
+<body>
+	<div id="options">
+		<p id="message">
+			Please fill out the form below to submit the request. <br>* =
+			required
+		</p>
+		<form action="createreimbursementhandler" method="post" enctype="multipart/form-data">
+			<p id="field">
+				Amount Requesting: *<br>
+			</p>
+			<input type="number" name="amount" min="0" step="0.01" size="25"
+				required> <br>
+			<p id="field">
+				Type of Reimbursement: *<br>
+			</p>
+			<input list="types" name="type" size="25" required>
 			<datalist id="types">
-			    <option value="Medical">
-			    <option value="Travel">
-			    <option value="Business Expense">
-			</datalist> 
-			<br>
-			<br>
-			Additional Description:<br>
-			<input type="text" name="description" required>
-			<br>
-			<br>
-			Receipt: (Will implement)<br>
-			<br>
+				<option value="Medical">
+				<option value="Travel">
+				<option value="Business Expense">
+			</datalist>
+			<p id="field">
+				Description of Expenditure: *<br>
+			</p>
+			<input type="text" name="description" size="25" required> <br>
+
+			<p id="field">
+				Receipt: <br>
+			</p>
+			<input type="file" name="image" accept="image/jpg" > <br> <br>
+
 			<button type="submit">Submit</button>
 		</form>
-	</body>
+	</div>
+</body>
 </html>

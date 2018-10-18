@@ -27,22 +27,27 @@ public class UpdateInfo extends HttpServlet {
 			String field = req.getParameter("field");
 			String changeInfo = req.getParameter("changeinfo");
 			
-			System.out.println(id + " " + field + " " + changeInfo);
-
 			boolean result = UserDao.updateEmployeeByID(id, changeInfo, field);
 			
+			pw.println("<html><body style=\"background-color: lightblue;\">");
 			if (result) {
-				pw.println("Update successful! Redirecting back to the main menu");
+				pw.println("<p style=\"text-align:center;font-size:40px;margin-top:200px;font-weight:bold;\">"
+						+ "Update successful! Redirecting back to the main menu</p>");
 			} else {
-				pw.println("Update failed! Redirecting back to the main menu");
+				pw.println("<p style=\"text-align:center;font-size:40px;margin-top:200px;font-weight:bold;\">"
+						+ "Update failed! Redirecting back to the main menu</p>");
 			}
 
 			resp.setHeader("Refresh", "3; URL=/ERS-Servlet/main-menu");
 
 		} else {
-			pw.println("BRO YOU GOTTA LOGIN FIRST!! WE ARE TAKING YOU HOME TO LOGIN MY DUDE");
+			pw.println("<p style=\"text-align:center;font-size:40px;margin-top:200px;font-weight:bold;\">"
+					+ "You must be logged in to access this page.<br>Sending you to the login page</p>");			
 			resp.setHeader("Refresh", "3; URL=main-menu");
 		}
+		
+		pw.println("</body> </html> ");
+		pw.close();
 
 	}
 }
