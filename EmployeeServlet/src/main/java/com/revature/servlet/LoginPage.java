@@ -52,7 +52,7 @@ public class LoginPage extends HttpServlet {
 					+ "Failed to login. You will not be redirected to the home page" + "</p>");
 			pw.println("</body></html>");
 
-			resp.setHeader("Refresh", "2; URL=home");
+			resp.setHeader("Refresh", "2; URL=/ERS-Servlet/home");
 		}
 
 		pw.close();

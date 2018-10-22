@@ -90,7 +90,7 @@ public class UpdateInfo extends HttpServlet {
 			pw.println("<html><body style=\"background-color: #f27171;\">");
 			pw.println("<p style=\"text-align:center;font-size:40px;margin-top:200px;font-weight:bold;\">"
 					+ "You must be logged in to access this page.<br>Sending you to the login page</p>");
-			resp.setHeader("Refresh", "3; URL=main-menu");
+			resp.setHeader("Refresh", "3; URL=/ERS-Servlet/home");
 		}
 
 		pw.println("</body> </html> ");

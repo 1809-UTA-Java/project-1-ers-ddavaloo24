@@ -83,7 +83,7 @@ public class CreateReimbursement extends HttpServlet {
 					+ "You must be logged in to access this page.<br>Sending you to the login page</p>");
 			pw.println("</body> </html> ");
 
-			resp.setHeader("Refresh", "3; URL=home");
+			resp.setHeader("Refresh", "3; URL=/ERS-Servlet/home");
 		}
 
 		pw.close();
