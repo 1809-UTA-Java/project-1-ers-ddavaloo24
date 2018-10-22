@@ -19,6 +19,14 @@ import com.revature.repository.ReimbursementDao;
 import com.revature.repository.UserDao;
 import com.revature.util.StyleUtil;
 
+/**
+ * 
+ * Servlet that prints either all reimbursements with link to the full
+ * details or displays the full details using the unique URI
+ * 
+ * @author Daria Davaloo
+ *
+ */
 @WebServlet("/reimbursements/*")
 @SuppressWarnings("serial")
 public class ViewReimbursements extends HttpServlet {
@@ -32,7 +40,6 @@ public class ViewReimbursements extends HttpServlet {
 		ArrayList<Reimbursement> reim = new ArrayList<>();
 
 		if (session != null) {
-
 			int id = (Integer) session.getAttribute("id");
 			User user = UserDao.retrieveUserByID(id);
 
@@ -46,17 +53,16 @@ public class ViewReimbursements extends HttpServlet {
 			}
 
 			if (path == null || path.equals("/")) {
-
 				pw.println("<div id=\"options\">");
 
 				int i = 0;
-				pw.println("Pending Requests \n");
+				pw.println("<p id=\"message\">Pending Requests</p><br>");
 				for (Reimbursement re : reim) {
 					if (re.getStatus() == 1) {
-						pw.println("<br>");
 						pw.println("<a href=\"reimbursements/" + re.getId() + "\">");
 						pw.println(re.viewReimbursement());
 						pw.println("</a>");
+						pw.println("<br>");
 						i++;
 					}
 				}
@@ -64,13 +70,13 @@ public class ViewReimbursements extends HttpServlet {
 					pw.println("<br>None");
 
 				i = 0;
-				pw.println("<br><br>Approved Requests \n");
+				pw.println("<p id=\"message\">Approved Request</p><br>");
 				for (Reimbursement re : reim) {
 					if (re.getStatus() == 2) {
-						pw.println("<br>");
 						pw.println("<a href=\"reimbursements/" + re.getId() + "\">");
 						pw.println(re.viewReimbursement());
 						pw.println("</a>");
+						pw.println("<br>");
 						i++;
 					}
 				}
@@ -79,13 +85,13 @@ public class ViewReimbursements extends HttpServlet {
 
 				if (user instanceof EmployeeUser) {
 					i = 0;
-					pw.println("<br><br>Denied Requests \n");
+					pw.println("<p id=\"message\">Denied Requests</p><br>");
 					for (Reimbursement re : reim) {
 						if (re.getStatus() == 3) {
-							pw.println("<br>");
 							pw.println("<a href=\"reimbursements/" + re.getId() + "\">");
 							pw.println(re.viewReimbursement());
 							pw.println("</a>");
+							pw.println("<br>");
 							i++;
 						}
 					}
@@ -119,25 +125,26 @@ public class ViewReimbursements extends HttpServlet {
 					session.removeAttribute("reimID");
 				}
 				session.setAttribute("reimID", found.getId());
-				
 				session.removeAttribute("imageBytes");
+				
+				//Actually print out the reimbursement information
 				found.viewReimbursementFull(pw);
 
+				//Provide a link to the receipt
 				if (found.getImage() != null) {
 					session.setAttribute("imageBytes", found.getImage());
 					pw.println("<a href=\"/ERS-Servlet/receipt/" + found.getId() +  "\">Receipt</a>");
 				}
 				pw.println("</div>");
 
+				//Give form to delete pending request or form for approval or denial
 				if (user.getPosition() == 1 && found.getStatus() == 1) {
-
 					pw.println("<div id=\"accountapp\">");
 					pw.println("<form action=\"cancel\" method=\"post\">"
 							+ "<button type=\"submit\">Delete Current Request</button>" + "</form>");
 					pw.println("</div>");
 
 				} else if (user.getPosition() == 2) {
-
 					pw.println("<div id=\"accountapp\">");
 					if (found.getStatus() == 1) {
 						pw.println("<form action=\"approveordeny\" method=\"post\">");

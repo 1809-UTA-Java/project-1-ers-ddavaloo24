@@ -18,6 +18,15 @@ import org.apache.commons.io.IOUtils;
 import com.revature.model.Reimbursement;
 import com.revature.repository.ReimbursementDao;
 
+/**
+ * 
+ * Servlet that processes the createreimbursement.html form and retrieve the
+ * text and file (if applicable) from the form and inserts the information into
+ * the database
+ * 
+ * @author Daria Davaloo
+ *
+ */
 @WebServlet("/createreimbursementhandler")
 @SuppressWarnings("serial")
 @MultipartConfig
@@ -69,8 +78,7 @@ public class CreateReimbursement extends HttpServlet {
 
 			resp.setHeader("Refresh", "3; URL=main-menu");
 		} else {
-
-			pw.println("<html><body");
+			pw.println("<html><body style=\"background-color: #f27171;\">");
 			pw.println("<p style=\"text-align:center;font-size:40px;margin-top:200px;font-weight:bold;\">"
 					+ "You must be logged in to access this page.<br>Sending you to the login page</p>");
 			pw.println("</body> </html> ");

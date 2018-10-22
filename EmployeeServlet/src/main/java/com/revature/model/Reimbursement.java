@@ -5,6 +5,16 @@ import java.sql.Timestamp;
 
 import com.revature.repository.UserDao;
 
+/**
+ * 
+ * Blueprint for a reimbursement with descriptors that match the database table
+ * housing them. There are methods to view the reimbursements in a short form
+ * used for links and a long form for displaying all fields to both employee and
+ * manager
+ * 
+ * @author Daria Davaloo
+ *
+ */
 public class Reimbursement {
 	int id;
 	double amount;
@@ -17,8 +27,9 @@ public class Reimbursement {
 	int type;
 	int status;
 
-	public Reimbursement(int id, double amount, String description, byte[] image, Timestamp time_submitted, Timestamp time_resolved,
-			int id_author, int id_resolver, int type, int status) {
+	// Constructors
+	public Reimbursement(int id, double amount, String description, byte[] image, Timestamp time_submitted,
+			Timestamp time_resolved, int id_author, int id_resolver, int type, int status) {
 		super();
 		this.id = id;
 		this.amount = amount;
@@ -45,11 +56,13 @@ public class Reimbursement {
 		this.status = status;
 	}
 
+	// View the reimbursement as a short form of id and amount
 	public String viewReimbursement() {
 		String strDouble = String.format("%.2f", amount);
-		return ("ID: " + id + " ,Amount: $" + strDouble + "\n");
+		return ("ID: " + id + " , Amount: $" + strDouble + "\n");
 	}
 
+	// View entire reimbursement with all fields formatted using html
 	public void viewReimbursementFull(PrintWriter pw) {
 
 		User user = UserDao.retrieveUserByID(id_author);

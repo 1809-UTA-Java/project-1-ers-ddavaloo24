@@ -12,47 +12,54 @@ import javax.servlet.http.HttpSession;
 
 import com.revature.repository.ReimbursementDao;
 
+/**
+ * 
+ * Servlet that deletes the reimbursement request when called by an employee
+ * that uses the DAo and prints a corresponding message.
+ * 
+ * @author Daria Davaloo
+ *
+ */
 @SuppressWarnings("serial")
 @WebServlet("/reimbursements/cancel")
 public class CancelReimbursement extends HttpServlet {
-	
+
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		this.doDelete(req, resp);
 	}
-	
+
 	@Override
 	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		
+
 		HttpSession session = req.getSession(false);
 		PrintWriter pw = resp.getWriter();
-		
+
 		pw.println("<html><body style=\"background-color: lightblue;\">");
-		
-		if(session != null) {
+
+		if (session != null) {
 			int reimID = (Integer) session.getAttribute("reimID");
-			
+
 			boolean result = ReimbursementDao.deleteReimbursementByID(reimID);
-			if(result) {
+			if (result) {
 				pw.println("<p style=\"text-align:center;font-size:40px;margin-top:200px;font-weight:bold;\">"
 						+ "Deletion successful! Redirecting back to the main menu</p>");
 			} else {
 				pw.println("<p style=\"text-align:center;font-size:40px;margin-top:200px;font-weight:bold;\">"
 						+ "Deletion failed! Redirecting back to the main menu</p>");
 			}
-			
+
 			resp.setHeader("Refresh", "3; URL=/ERS-Servlet/main-menu");
-			
+
 		} else {
+			pw.println("<html><body style=\"background-color: #f27171;\">");
 			pw.println("<p style=\"text-align:center;font-size:40px;margin-top:200px;font-weight:bold;\">"
 					+ "You must be logged in to access this page.<br>Sending you to the login page</p>");
 			pw.println("</body> </html> ");
 			resp.setHeader("Refresh", "3; URL=home");
 		}
-		
+
 		pw.println("</body></html>");
-		
 		pw.close();
-		
 	}
 }

@@ -10,6 +10,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+/**
+ * 
+ * Default servlet that will return the home page or the main-menu
+ * if the session already exists
+ * 
+ * @author Daria Davaloo
+ *
+ */
 @SuppressWarnings("serial")
 @WebServlet("/home")
 public class IndexServlet extends HttpServlet {
@@ -18,14 +26,11 @@ public class IndexServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
 		HttpSession sesh = req.getSession(false);
-
 		if (sesh != null) {
 			resp.sendRedirect("main-menu");
 		} else {
 			RequestDispatcher rd = req.getRequestDispatcher("index.html");
 			rd.forward(req, resp);
 		}
-
 	}
-
 }

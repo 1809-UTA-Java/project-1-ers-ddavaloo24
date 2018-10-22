@@ -29,6 +29,6 @@ public class LoginUtilTest {
 	
 	@Test
 	public void testUsernameCheckerUnique() {
-		assertEquals(LoginUtil.usernameChecker("timmycat"), false);
+		assertEquals(LoginUtil.usernameChecker("timdeck"), false);
 	}
 }

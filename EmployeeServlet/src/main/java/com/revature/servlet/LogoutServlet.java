@@ -15,6 +15,14 @@ import com.revature.model.ManagerUser;
 import com.revature.model.User;
 import com.revature.repository.UserDao;
 
+/**
+ * 
+ * Servlet that logs current user out of their account yb\\by invalidating the
+ * session
+ * 
+ * @author Daria Davaloo
+ *
+ */
 @SuppressWarnings("serial")
 @WebServlet("/main-menu/logout")
 public class LogoutServlet extends HttpServlet {
@@ -34,16 +42,20 @@ public class LogoutServlet extends HttpServlet {
 			} else if (user instanceof ManagerUser) {
 				pw.println("<html><body style=\"background-color: #cf9ce5;\">");
 			}
-
-			pw.println("<p style=\"text-align:center;font-size:40px;margin-top:200px;font-weight:bold;\">"
-					+ "BRO YOU ARE LOGGED OUT</p>");
-			pw.println("</body></html>");
-
 			session.invalidate();
 
+			pw.println("<p style=\"text-align:center;font-size:40px;margin-top:200px;font-weight:bold;\">"
+					+ "You are now logged out!<br>Have a good day!</p>");
+			pw.println("</body></html>");
+
 			resp.setHeader("Refresh", "2; URL=/ERS-Servlet/home");
+		} else {
+			pw.println("<html><body style=\"background-color: #f27171;\">");
+			pw.println("<p style=\"text-align:center;font-size:40px;margin-top:200px;font-weight:bold;\">"
+					+ "You must be logged in to access this page.<br>Sending you to the login page</p>");
+			resp.setHeader("Refresh", "3; URL=main-menu");
 		}
-		
+
 		pw.close();
 	}
 }

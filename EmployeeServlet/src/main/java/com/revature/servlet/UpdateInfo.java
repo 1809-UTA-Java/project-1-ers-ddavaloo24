@@ -11,7 +11,16 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.revature.repository.UserDao;
+import com.revature.util.LoginUtil;
 
+/**
+ * 
+ * Servlet that uses the update employee fields form to update the different
+ * information fields
+ * 
+ * @author Daria Davaloo
+ *
+ */
 @WebServlet("/employees/updateinfo")
 @SuppressWarnings("serial")
 public class UpdateInfo extends HttpServlet {
@@ -26,26 +35,64 @@ public class UpdateInfo extends HttpServlet {
 			int id = (Integer) session.getAttribute("id");
 			String field = req.getParameter("field");
 			String changeInfo = req.getParameter("changeinfo");
-			
-			boolean result = UserDao.updateEmployeeByID(id, changeInfo, field);
-			
+			boolean validator = true;
+
 			pw.println("<html><body style=\"background-color: lightblue;\">");
-			if (result) {
+			
+			// Validate the information they want to update
+			if (changeInfo.equals("First Name")) {
+				if (!LoginUtil.nameChecker(field)) {
+					validator = false;
+
+					pw.println("<p style=\"text-align:center;font-size:40px;margin-top:200px;font-weight:bold;\">"
+							+ "Your first name must be 2-20 characters and contain no special characters<br></p>");
+				}
+			} else if (changeInfo.equals("Last Name")) {
+				if (!LoginUtil.nameChecker(field)) {
+					validator = false;
+
+					pw.println("<p style=\"text-align:center;font-size:40px;margin-top:200px;font-weight:bold;\">"
+							+ "Your last name must be 2-20 characters and contain no special characters<br></p>");
+				}
+			} else if (changeInfo.equals("Username")) {
+				if (!LoginUtil.usernameChecker(field)) {
+					validator = false;
+
+					pw.println("<p style=\"text-align:center;font-size:40px;margin-top:200px;font-weight:bold;\">"
+							+ "Your username must be 8-12 characters, unique, and contain no spaces<br></p>");
+				}
+			} else if (changeInfo.equals("Password")) {
+				if (!LoginUtil.passwordChecker(field)) {
+					validator = false;
+
+					pw.println("<p style=\"text-align:center;font-size:40px;margin-top:200px;font-weight:bold;\">"
+							+ "Your password must be 8-12 characters and contain no spaces<br></p>");
+				}
+			}
+
+			if (!validator) {
 				pw.println("<p style=\"text-align:center;font-size:40px;margin-top:200px;font-weight:bold;\">"
-						+ "Update successful! Redirecting back to the main menu</p>");
+						+ "Update failed!<br>Redirecting back to the main menu...</p>");
 			} else {
-				pw.println("<p style=\"text-align:center;font-size:40px;margin-top:200px;font-weight:bold;\">"
-						+ "Update failed! Redirecting back to the main menu</p>");
+				boolean result = UserDao.updateEmployeeByID(id, changeInfo, field);
+				if (result) {
+					pw.println("<p style=\"text-align:center;font-size:40px;margin-top:200px;font-weight:bold;\">"
+							+ "Update successful!<br> Redirecting back to the main menu...</p>");
+				} else {
+					pw.println("<p style=\"text-align:center;font-size:40px;margin-top:200px;font-weight:bold;\">"
+							+ "Update failed!<br> Redirecting back to the main menu...</p>");
+				}
 			}
 
 			resp.setHeader("Refresh", "3; URL=/ERS-Servlet/main-menu");
 
 		} else {
+			pw.println("<html><body style=\"background-color: #f27171;\">");
 			pw.println("<p style=\"text-align:center;font-size:40px;margin-top:200px;font-weight:bold;\">"
-					+ "You must be logged in to access this page.<br>Sending you to the login page</p>");			
+					+ "You must be logged in to access this page.<br>Sending you to the login page</p>");
 			resp.setHeader("Refresh", "3; URL=main-menu");
 		}
-		
+
 		pw.println("</body> </html> ");
 		pw.close();
 

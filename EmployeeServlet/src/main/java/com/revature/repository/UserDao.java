@@ -11,8 +11,15 @@ import com.revature.model.EmployeeUser;
 import com.revature.model.ManagerUser;
 import com.revature.model.User;
 import com.revature.util.ConnectionUtil;
-import com.revature.util.LoginUtil;
 
+/**
+ * 
+ * Data access object used to link employees and managers to ERS_DB tables.
+ * Allows insertion, deletion, and the updating of fields of all users.
+ * 
+ * @author Daria Davaloo
+ *
+ */
 public class UserDao {
 	public static boolean insertUser(User user) {
 		PreparedStatement ps = null;
@@ -244,17 +251,15 @@ public class UserDao {
 		try (Connection conn = ConnectionUtil.getConnection()) {
 
 			if (changeInfo.equals("First Name")) {
-				if (!LoginUtil.nameChecker(field)) {
-					return false;
-				}
 				sql = "UPDATE ERS_USERS SET U_FIRSTNAME=? WHERE U_ID=?";
 			} else if (changeInfo.equals("Last Name")) {
-				if (!LoginUtil.nameChecker(field)) {
-					return false;
-				}
 				sql = "UPDATE ERS_USERS SET U_LASTNAME=? WHERE U_ID=?";
 			} else if (changeInfo.equals("Email")) {
 				sql = "UPDATE ERS_USERS SET U_EMAIL=? WHERE U_ID=?";
+			} else if (changeInfo.equals("Username")) {
+				sql = "UPDATE ERS_USERS SET U_USERNAME=? WHERE U_ID=?";
+			} else if (changeInfo.equals("Password")) {
+				sql = "UPDATE ERS_USERS SET U_PASSWORD=? WHERE U_ID=?";
 			}
 
 			ps = conn.prepareStatement(sql);

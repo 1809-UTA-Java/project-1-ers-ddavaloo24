@@ -2,7 +2,13 @@ package com.revature.util;
 
 import com.revature.repository.UserDao;
 
-
+/**
+ * 
+ * Used to validate name and username uniqueness
+ * 
+ * @author Daria Davaloo
+ *
+ */
 public class LoginUtil {
 
     //Method to check whether the first or last name in the account creation stage is valid

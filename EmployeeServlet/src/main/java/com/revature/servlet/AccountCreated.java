@@ -15,6 +15,14 @@ import com.revature.model.User;
 import com.revature.repository.UserDao;
 import com.revature.util.LoginUtil;
 
+/**
+ * 
+ * Servlet to handle validation of fields passed in by the makeaccount.html and 
+ * insertion of new User into the database and giving a message upon completion
+ * 
+ * @author Daria Davaloo
+ *
+ */
 @SuppressWarnings("serial")
 @WebServlet("/accountcreated")
 public class AccountCreated extends HttpServlet {

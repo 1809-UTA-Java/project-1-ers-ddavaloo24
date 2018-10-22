@@ -13,6 +13,15 @@ import javax.servlet.http.HttpSession;
 import com.revature.model.User;
 import com.revature.repository.UserDao;
 
+/**
+ * 
+ * Servlet that uses the id stored in the session to 
+ * return the current user and use polymorphism to go
+ * to the corrent main menu.
+ * 
+ * @author Daria Davaloo
+ *
+ */
 @SuppressWarnings("serial")
 @WebServlet("/main-menu")
 public class MainMenu extends HttpServlet {
@@ -29,7 +38,7 @@ public class MainMenu extends HttpServlet {
 			String name = user.getFirstName() + " " + user.getLastName();
 			user.viewHome(pw, name);
 		} else {
-
+			pw.println("<html><body style=\"background-color: #f27171;\">");
 			pw.println("<p style=\"text-align:center;font-size:40px;margin-top:200px;font-weight:bold;\">"
 					+ "You must be logged in to access this page.<br>Sending you to the login page</p>");
 			pw.println("</body> </html> ");			

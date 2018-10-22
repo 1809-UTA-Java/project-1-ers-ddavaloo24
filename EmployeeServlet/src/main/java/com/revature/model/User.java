@@ -4,6 +4,14 @@ import java.io.PrintWriter;
 
 import com.revature.repository.UserDao;
 
+/**
+ * 
+ * Abstract class for a user. Defines the fields of both a managerUser and
+ * employeeUser and provides the constructors that they will use
+ * 
+ * @author Daria Davaloo
+ *
+ */
 public abstract class User {
 
 	protected int id;
@@ -14,7 +22,7 @@ public abstract class User {
 	protected String email;
 	protected int position;
 
-	//With ID
+	// With ID
 	public User(int id, String fn, String ln, String un, String pw, String em, int pos) {
 		this.id = id;
 		this.firstName = fn;
@@ -24,8 +32,8 @@ public abstract class User {
 		this.email = em;
 		this.position = pos;
 	}
-	
-	//WITHOUT ID
+
+	// WITHOUT ID
 	public User(String firstName, String lastName, String username, String password, String email, int position) {
 		super();
 		this.firstName = firstName;
@@ -44,7 +52,7 @@ public abstract class User {
 
 		return UserDao.loginUser(username, password);
 	}
-	
+
 	public int getId() {
 		return id;
 	}

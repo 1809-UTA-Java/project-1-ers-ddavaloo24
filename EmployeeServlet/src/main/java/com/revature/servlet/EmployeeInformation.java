@@ -19,6 +19,14 @@ import com.revature.repository.ReimbursementDao;
 import com.revature.repository.UserDao;
 import com.revature.util.StyleUtil;
 
+/**
+ * 
+ * Servlet that provides access to viewing employee information as both types of
+ * users.
+ * 
+ * @author Daria Davaloo
+ *
+ */
 @WebServlet("/employees/*")
 @SuppressWarnings("serial")
 public class EmployeeInformation extends HttpServlet {
@@ -35,6 +43,7 @@ public class EmployeeInformation extends HttpServlet {
 			int id = (Integer) session.getAttribute("id");
 			User user = UserDao.retrieveUserByID(id);
 
+			// As a manager, you can view all employee records as well as specific records
 			if (user instanceof ManagerUser) {
 
 				StyleUtil.managerViewEmployeeStyle(pw);
@@ -52,6 +61,7 @@ public class EmployeeInformation extends HttpServlet {
 					pw.println("</div>");
 				}
 
+				// Use split to view specific employees
 				String[] pathSplits = path.split("/");
 				if (pathSplits.length != 2) {
 					resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
@@ -68,6 +78,8 @@ public class EmployeeInformation extends HttpServlet {
 					}
 				}
 
+				// View the information as well as display the pending accounts of the specific
+				// employee
 				if (found != null) {
 					pw.println("<div id=\"options\">");
 
@@ -91,6 +103,7 @@ public class EmployeeInformation extends HttpServlet {
 
 			} else if (user instanceof EmployeeUser) {
 
+				// As an employee you cannot view all records, just your own
 				StyleUtil.employeerViewEmployeeStyle(pw);
 
 				if (path == null || path.equals("/")) {
@@ -112,23 +125,11 @@ public class EmployeeInformation extends HttpServlet {
 					return;
 				}
 
+				// View your record as well as option to update certain fields
 				pw.println("<div id=\"options\">");
 				((EmployeeUser) user).viewAllInfo(pw);
 				pw.println("</div>");
-
-				
-				pw.println("<div id=\"accountapp\">");
-				pw.println("<form action=\"updateinfo\" method=\"post\">");
-				pw.println("<p id=\"message\">Change account information:</p><br>\n"
-						+ "<p id=\"field\">Information field you want to change:</p>\n"
-						+ "	<input list=\"changeinfo\" name=\"changeinfo\" required>\n"
-						+ "	<datalist id=\"changeinfo\">\n" + "<option value=\"First Name\">\n"
-						+ "	    <option value=\"Last Name\">\n" + "<option value=\"Email\">\n" + "	</datalist><br> ");
-				pw.println("<br><p id=\"field\">Update field to:</p>\n"
-						+ "<input type=\"text\" name=\"field\" required>\n");
-				pw.println("<br><button type=\"submit\">Change Info</button>");
-				pw.println("</form>");
-				pw.println("</div>");
+				StyleUtil.updateEmployee(pw);
 			}
 
 			pw.println("</body></html>");

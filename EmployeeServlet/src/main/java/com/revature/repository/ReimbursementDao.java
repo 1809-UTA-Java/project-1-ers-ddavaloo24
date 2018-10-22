@@ -13,6 +13,14 @@ import java.util.ArrayList;
 import com.revature.model.Reimbursement;
 import com.revature.util.ConnectionUtil;
 
+/**
+ * 
+ * Data access object for linking the Reimbursement object and the ERS-DB
+ * associated tables. Has methods to insert, update, and delete reimbursements
+ * 
+ * @author Daria Davaloo
+ *
+ */
 public class ReimbursementDao {
 	public static boolean insertReimbursement(Reimbursement reim) {
 		PreparedStatement ps = null;
@@ -27,8 +35,7 @@ public class ReimbursementDao {
 
 			if (reim.getImage() != null) {
 				ps.setBinaryStream(3, new ByteArrayInputStream(reim.getImage()));
-			}
-			else {
+			} else {
 				ps.setObject(3, null);
 			}
 			ps.setTimestamp(4, reim.getTime_submitted());
@@ -90,7 +97,7 @@ public class ReimbursementDao {
 					Blob blob = rs.getBlob("R_RECEIPT");
 					image = blob.getBytes(1L, (int) blob.length());
 				}
-				
+
 				reim.add(new Reimbursement(r_id, amt, desc, image, time_sub, time_res, id, id_res, type, status));
 			}
 
@@ -168,12 +175,11 @@ public class ReimbursementDao {
 				id_res = rs.getInt("U_ID_RESOLVER");
 				type = rs.getInt("RT_TYPE");
 				status = rs.getInt("RT_STATUS");
-				
+
 				if (rs.getBlob("R_RECEIPT") != null) {
 					Blob blob = rs.getBlob("R_RECEIPT");
 					image = blob.getBytes(1L, (int) blob.length());
-				}
-				else {
+				} else {
 					image = null;
 				}
 
