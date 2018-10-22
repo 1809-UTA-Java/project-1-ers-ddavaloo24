@@ -8,7 +8,7 @@ import com.revature.util.StyleUtil;
  * 
  * Model for a default Employee which extends from the abstract class User. Has
  * methods to view the main menu, a shorthand for the employee, and a full view
- * of the emplyee
+ * of the emplyee's fields
  * 
  * @author Daria Davaloo
  *
